@@ -1,0 +1,173 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  link: string;
+  tags?: string[];
+  coverImage?: string;
+}
+
+const { title, description, link, tags = [], coverImage } = Astro.props;
+---
+
+<article class="project-card group flex h-full flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
+  <!-- Cover image or gradient placeholder -->
+  {coverImage ? (
+    <div class="project-visual overflow-hidden">
+      <img
+        src={coverImage}
+        alt={`Preview de ${title}`}
+        loading="lazy"
+        class="project-cover w-full h-44 object-cover"
+      />
+    </div>
+  ) : (
+    <div class="project-visual project-placeholder w-full h-44 flex items-center justify-center">
+      <span class="project-pulse project-pulse--one" aria-hidden="true"></span>
+      <span class="project-pulse project-pulse--two" aria-hidden="true"></span>
+      <svg class="project-code-icon relative z-10 w-11 h-11 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      </svg>
+    </div>
+  )}
+
+  <!-- Content -->
+  <div class="flex flex-col flex-1 p-5 gap-3">
+    <h3 class="text-lg font-bold text-[var(--color-text)] group-hover:text-accent transition-colors duration-200">
+      {title}
+    </h3>
+    <p class="text-sm text-[var(--color-text-muted)] leading-relaxed flex-1 line-clamp-3">
+      {description}
+    </p>
+
+    <!-- Tags -->
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {tags.map((tag, index) => (
+          <span class="project-tag px-2 py-0.5 rounded-full text-xs font-medium border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-muted)]" style={`--tag-index: ${index}`}>
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Link -->
+    <a
+      href={link}
+      class="inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent/80 transition-colors duration-200 mt-auto"
+    >
+      Ver más
+      <svg class="project-arrow w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </a>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    position: relative;
+    isolation: isolate;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.1);
+    transition: transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 380ms ease,
+      box-shadow 380ms ease;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 25%, color-mix(in srgb, var(--color-accent) 13%, transparent) 48%, transparent 70%);
+    transform: translateX(-135%);
+    transition: transform 750ms ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-9px) scale(1.012);
+    border-color: color-mix(in srgb, var(--color-accent) 62%, transparent);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.2), 0 0 34px var(--color-glow);
+  }
+
+  .project-card:hover::after {
+    transform: translateX(135%);
+  }
+
+  .project-visual {
+    position: relative;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .project-cover {
+    transition: transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 650ms ease;
+  }
+
+  .project-card:hover .project-cover {
+    transform: scale(1.07);
+    filter: saturate(1.2) contrast(1.04);
+  }
+
+  .project-placeholder {
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent 32%),
+      linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 20%, var(--color-surface-2)), var(--color-surface-2) 48%, color-mix(in srgb, var(--color-accent-2) 22%, var(--color-surface-2)));
+  }
+
+  .project-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(circle, black, transparent 72%);
+  }
+
+  .project-pulse {
+    position: absolute;
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 65%, transparent);
+    border-radius: 999px;
+    opacity: 0;
+    animation: project-pulse 3s ease-out infinite;
+  }
+
+  .project-pulse--two {
+    animation-delay: 1.5s;
+  }
+
+  .project-code-icon {
+    filter: drop-shadow(0 0 12px var(--color-glow));
+    transition: transform 450ms ease;
+  }
+
+  .project-card:hover .project-code-icon {
+    transform: scale(1.15) rotate(-4deg);
+  }
+
+  .project-tag {
+    transition: color 220ms ease, border-color 220ms ease, transform 220ms ease;
+  }
+
+  .project-card:hover .project-tag {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    transform: translateY(-2px);
+    transition-delay: calc(var(--tag-index) * 35ms);
+  }
+
+  .project-arrow {
+    transition: transform 220ms ease;
+  }
+
+  .project-card:hover .project-arrow {
+    transform: translateX(5px);
+  }
+
+  @keyframes project-pulse {
+    0% { opacity: 0.55; transform: scale(0.55); }
+    75%, 100% { opacity: 0; transform: scale(1.85); }
+  }
+</style>

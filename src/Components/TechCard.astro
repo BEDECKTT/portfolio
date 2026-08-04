@@ -1,0 +1,55 @@
+---
+import SkillCategoryIcon from './SkillCategoryIcon.astro';
+
+interface TechItem {
+  name: string;
+}
+
+interface Props {
+  category: string;
+  categoryIcon?: string;
+  tech: TechItem[];
+}
+
+const { category, categoryIcon, tech } = Astro.props;
+---
+
+<div class="electric-card group h-full p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur-sm" style="backdrop-filter: blur(8px);">
+  <!-- Category header -->
+  <div class="flex items-center gap-3 mb-5">
+    {categoryIcon && (
+      <span class="skill-category-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent transition-all duration-300 group-hover:-translate-y-1 group-hover:border-accent/60 group-hover:bg-accent/15">
+        <SkillCategoryIcon name={categoryIcon} class="h-6 w-6" />
+      </span>
+    )}
+    <h3 class="text-base font-semibold leading-snug text-[var(--color-text)]">{category}</h3>
+  </div>
+
+  <!-- Tech badges -->
+  <ul class="flex flex-wrap gap-2" aria-label={`Tecnologías de ${category}`}>
+    {tech.map(item => (
+      <li class="inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-2)] px-3 py-1 text-xs font-medium text-[var(--color-text-muted)] transition-all duration-200 hover:scale-105 hover:border-accent/50 hover:text-accent cursor-default">
+        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent/70 shadow-[0_0_8px_var(--color-glow)]" aria-hidden="true"></span>
+        {item.name}
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .skill-category-icon {
+    box-shadow: inset 0 0 18px color-mix(in srgb, var(--color-accent) 8%, transparent),
+      0 0 18px color-mix(in srgb, var(--color-glow) 55%, transparent);
+  }
+
+  :global(.electric-card:hover) .skill-category-icon {
+    box-shadow: inset 0 0 22px color-mix(in srgb, var(--color-accent) 14%, transparent),
+      0 0 26px var(--color-glow);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skill-category-icon {
+      transition: none;
+    }
+  }
+</style>

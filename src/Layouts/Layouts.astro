@@ -1,0 +1,120 @@
+---
+import Header from '../Components/Header.astro';
+import Footer from '../Components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Theme init: blocking inline script — must be FIRST to prevent FOUC -->
+  <script is:inline>
+    const saved = localStorage.getItem('theme');
+    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', saved ?? preferred);
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+
+  <!-- SEO / Open Graph meta tags -->
+  {description && <meta name="description" content={description} />}
+  <meta property="og:title" content={title} />
+  {description && <meta property="og:description" content={description} />}
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts — Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-grid"></div>
+    <span class="energy-orb energy-orb--cyan"></span>
+    <span class="energy-orb energy-orb--violet"></span>
+    <span class="energy-orb energy-orb--magenta"></span>
+  </div>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div id="cursor-glow" aria-hidden="true"></div>
+
+  <Header />
+
+  <main class="max-w-[1200px] mx-auto px-4">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Animation observer: toggles .is-visible on [data-animate] elements as they enter the viewport -->
+  <script is:inline>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target); // fire once
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+    // Electric reading progress indicator.
+    const progressBar = document.getElementById('scroll-progress');
+    let scrollFrame = 0;
+
+    const updateScrollProgress = () => {
+      const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollRange > 0 ? Math.min(window.scrollY / scrollRange, 1) : 0;
+      if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
+      scrollFrame = 0;
+    };
+
+    const requestScrollUpdate = () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollProgress);
+    };
+
+    window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+    window.addEventListener('resize', requestScrollUpdate, { passive: true });
+    updateScrollProgress();
+
+    // Soft pointer glow for precise pointer devices only.
+    const cursorGlow = document.getElementById('cursor-glow');
+    const precisePointer = window.matchMedia('(pointer: fine)').matches;
+    let pointerFrame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    if (cursorGlow && precisePointer) {
+      window.addEventListener('pointermove', (event) => {
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        cursorGlow.classList.add('is-active');
+
+        if (!pointerFrame) {
+          pointerFrame = requestAnimationFrame(() => {
+            cursorGlow.style.transform = `translate3d(${pointerX - 176}px, ${pointerY - 176}px, 0)`;
+            pointerFrame = 0;
+          });
+        }
+      }, { passive: true });
+
+      document.documentElement.addEventListener('mouseleave', () => {
+        cursorGlow.classList.remove('is-active');
+      });
+    }
+  </script>
+</body>
+</html>

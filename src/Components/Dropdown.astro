@@ -1,0 +1,34 @@
+---
+let isOpen = false;
+---
+
+<nav class="relative inline-block text-left">
+    <!-- Botón del dropdown -->
+    <button id="dropdownButton" class="flex items-center px-4 py-2 bg-[#1CA7A4] text-white rounded-lg focus:outline-none">
+        Contacto
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </button>
+
+    <!-- Contenido del dropdown -->
+    <div id="dropdownMenu" class={`absolute mt-2 w-48 bg-[#064a40] rounded-md shadow-lg z-10 ${isOpen ? '' : 'hidden'}`}>
+        <div class="py-1">
+            <a href="mailto:robimejia381@gmail.com" class="block px-4 py-2 text-gray-100 hover:bg-gray-900">Correo</a>
+            <a href="https://www.instagram.com/weiiinen?igsh=cjQzajRtdWRmaXIw&utm_source=qr" target="_blank" class="block px-4 py-2 text-gray-100 hover:bg-gray-900">Instagram</a>
+            <a href="https://twitter.com/tuusuario" target="_blank" class="block px-4 py-2 text-gray-100 hover:bg-gray-900">X (Twitter)</a>
+        </div>
+    </div>
+
+    <!-- Script para manejar el toggle -->
+    <script>
+        const dropdownButton = document.getElementById('dropdownButton');
+        dropdownButton?.addEventListener('click', () => {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownMenu) {
+                dropdownMenu.classList.toggle('hidden');
+            }
+        });
+    </script>
+</nav>
+

@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  issuer: string;
+  domain: string;
+  status: "En Progreso" | "Planificado";
+}
+
+const { title, issuer, domain, status } = Astro.props;
+---
+
+<div class="group flex flex-col gap-3 p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/10 hover:border-accent/30 transition-all duration-300">
+  <!-- Domain badge -->
+  <span class="self-start text-xs font-medium px-2 py-0.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-text-muted)]">
+    {domain}
+  </span>
+
+  <!-- Title -->
+  <h3 class="text-base font-bold text-[var(--color-text)] group-hover:text-accent transition-colors duration-200">
+    {title}
+  </h3>
+
+  <!-- Issuer -->
+  <p class="text-sm text-[var(--color-text-muted)]">{issuer}</p>
+
+  <!-- Status badge -->
+  <span
+    class={`self-start mt-auto px-3 py-0.5 rounded-full text-xs font-semibold border ${
+      status === 'En Progreso'
+        ? 'border-yellow-500/40 text-yellow-400 bg-yellow-500/10'
+        : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-2)]'
+    }`}
+  >
+    {status}
+  </span>
+</div>
