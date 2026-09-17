@@ -1,0 +1,60 @@
+---
+title: "Agente Canino de Geolocalización"
+ShortDescription: "Backend asíncrono que procesa fotografías y telemetría de un collar inteligente para registrar ubicación, actividad y alertas"
+tags:
+  - Python
+  - FastAPI
+  - PostgreSQL/PostGIS
+  - Redis
+  - MinIO
+  - Docker
+coverImage: "/images/agente-canino.png"
+---
+
+# Agente Canino de Geolocalización
+
+## Descripción general
+
+Sistema backend diseñado para procesar las capturas generadas por un collar inteligente equipado con **ESP32-CAM, GPS e IMU**. El agente recibe fotografías y telemetría mediante una cola de trabajos, valida la información y crea un historial asociado a cada mascota.
+
+![Ejemplo del JSON procesado por el agente canino](/images/agente-canino.png)
+
+## Flujo de procesamiento
+
+1. Recibe el JSON de sensores y la ruta de la fotografía mediante **Redis y ARQ**.
+2. Reclama la captura por su identificador para evitar procesamiento duplicado.
+3. Valida la imagen, extrae sus metadatos e incorpora las coordenadas GPS en el EXIF.
+4. Genera una miniatura optimizada para la aplicación cliente.
+5. Almacena la información transaccional en PostgreSQL y los archivos en MinIO.
+6. Registra ubicaciones válidas y evalúa reglas para producir alertas.
+
+## Características principales
+
+- Procesamiento asíncrono, idempotente y escalable mediante múltiples workers.
+- Asociación permanente entre capturas, dispositivos y mascotas.
+- Validación del GPS para evitar posiciones inválidas como las coordenadas `0,0`.
+- Normalización de telemetría y estimación de actividad a partir del acelerómetro.
+- Generación de alertas por salida de geocerca, batería baja o pérdida de señal GPS.
+- Limpieza automática de archivos huérfanos cuando una operación falla.
+- API básica para consultar el original o la miniatura de una fotografía.
+
+## Arquitectura y tecnologías
+
+| Componente | Función |
+| --- | --- |
+| Python | Implementación del agente y sus reglas de procesamiento |
+| FastAPI | API HTTP para consultar imágenes y verificar el servicio |
+| Redis + ARQ | Cola de trabajos y ejecución asíncrona |
+| PostgreSQL + PostGIS | Persistencia de mascotas, sensores, ubicaciones y geocercas |
+| MinIO | Almacenamiento de originales y miniaturas compatible con S3 |
+| SQLAlchemy + Alembic | Acceso a datos y migraciones de la base de datos |
+| Pillow + piexif | Validación, miniaturas y escritura de coordenadas EXIF |
+| Docker Compose | Despliegue reproducible de todos los servicios |
+
+## Alcance actual
+
+El repositorio contiene el agente, los workers, las migraciones y una API mínima para servir fotografías. La API completa de ingesta desde el dispositivo se integra como un componente externo que publica los trabajos en la misma cola Redis.
+
+## Repositorio
+
+[Ver el código fuente en GitHub](https://github.com/BEDECKTT/agentdog)
