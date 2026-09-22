@@ -1,0 +1,92 @@
+---
+title: "TeachTrace — Trazabilidad del aprendizaje con IA"
+ShortDescription: "Plataforma académica para documentar, entregar y evaluar actividades con un uso transparente de inteligencia artificial"
+tags:
+  - Vue 3
+  - TypeScript
+  - NestJS
+  - TypeORM
+  - Azure Blob Storage
+---
+
+# TeachTrace
+
+## Descripción general
+
+**TeachTrace** es una plataforma académica desarrollada para documentar y evaluar el proceso de aprendizaje cuando los estudiantes utilizan herramientas de inteligencia artificial generativa.
+
+El sistema conserva la evidencia del trabajo realizado —ideas iniciales, prompts, validaciones, decisiones, reflexión y producto final— para que la evaluación no dependa únicamente del resultado entregado. La IA puede generar una valoración preliminar, pero la decisión final permanece en el docente.
+
+## Problema abordado
+
+El uso de IA en actividades académicas dificulta identificar cómo se construyó una solución y qué parte del trabajo corresponde realmente al estudiante. TeachTrace propone un flujo trazable y transparente que permite:
+
+- Registrar el proceso de razonamiento del estudiante.
+- Declarar la herramienta, el nivel y el propósito del uso de IA.
+- Conservar la conversación utilizada como evidencia.
+- Evaluar mediante rúbricas y resultados de aprendizaje.
+- Mantener al docente como responsable de la calificación definitiva.
+
+## Funcionalidades principales
+
+### Experiencia del docente
+
+- Gestión de clases y matrícula individual o masiva desde Excel.
+- Creación y publicación de actividades asociadas a una clase.
+- Asociación de resultados de aprendizaje.
+- Creación de rúbricas con siete dimensiones y cuatro niveles de desempeño.
+- Consulta de bitácoras, declaraciones de IA y productos entregados.
+- Descarga segura de los archivos enviados por los estudiantes.
+- Evaluación y seguimiento del rendimiento académico.
+
+### Experiencia del estudiante
+
+- Proceso guiado de bitácora dividido en cinco pasos.
+- Registro de ideas iniciales, prompts, conversación con IA, validaciones y reflexión final.
+- Guardado del progreso y recuperación de borradores.
+- Declaración explícita del nivel y propósito de uso de IA.
+- Entrega del producto académico mediante archivo PDF.
+- Dashboard con avance, actividades pendientes y alertas de vencimiento.
+- Preferencias de notificaciones, modo oscuro y opciones de accesibilidad.
+
+## Arquitectura
+
+El backend sigue una arquitectura de **monolito modular** con NestJS. Cada dominio mantiene responsabilidades claras y se integra a través de servicios de aplicación:
+
+- Autenticación y control de acceso.
+- Clases, matrículas y actividades.
+- Rúbricas y resultados de aprendizaje.
+- Bitácoras y declaraciones de IA.
+- Conversaciones, entregas y evaluación.
+- Notificaciones y preferencias del usuario.
+
+El frontend es una aplicación SPA construida con **Vue 3**, **Vue Router** y **TypeScript**, conectada al backend mediante una API REST. La persistencia utiliza **TypeORM**, con soporte para SQLite durante el desarrollo y PostgreSQL mediante configuración de entorno.
+
+## Seguridad e integraciones
+
+- Sesiones mediante cookies `HttpOnly` y `SameSite=Strict`.
+- Autorización basada en roles de estudiante y docente.
+- Limitación de intentos de inicio de sesión y respuesta `429`.
+- Recuperación de contraseña con tokens de un solo uso.
+- Envío de correos mediante SMTP.
+- Web Push para notificaciones del navegador.
+- Archivos académicos almacenados en un contenedor privado de **Azure Blob Storage**.
+
+## Calidad y pruebas
+
+El proyecto incluye pruebas unitarias, de componentes y de integración para validar los flujos principales, las reglas de autorización, la persistencia, los límites de archivos y la consistencia de los datos. Tanto el frontend como el backend disponen de comandos de compilación y pruebas automatizadas.
+
+## Trabajo realizado
+
+Proyecto académico colaborativo en el que se trabajó sobre:
+
+- Diseño e implementación de módulos backend y endpoints REST.
+- Modelado y validación de entidades académicas.
+- Desarrollo de interfaces para docentes y estudiantes.
+- Integración de almacenamiento de archivos y servicios de correo.
+- Automatización de pruebas y análisis QA de historias de usuario.
+- Accesibilidad, personalización y experiencia de uso.
+
+## Repositorio
+
+[Ver el código fuente de TeachTrace en GitHub](https://github.com/CarlosTorres6969/Teach_Trace)

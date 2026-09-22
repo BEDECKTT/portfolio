@@ -1,0 +1,105 @@
+---
+title: "FreelanceHub — Marketplace de servicios profesionales"
+ShortDescription: "Plataforma full-stack que conecta clientes y freelancers mediante servicios, órdenes, mensajería y administración centralizada"
+tags:
+  - Next.js 16
+  - React 19
+  - TypeScript
+  - Azure SQL
+  - Azure Blob Storage
+  - Groq API
+---
+
+# FreelanceHub
+
+## Descripción general
+
+**FreelanceHub** es un marketplace full-stack orientado a conectar clientes con profesionales independientes. La plataforma permite descubrir servicios, contratar freelancers y administrar el ciclo completo de una orden desde una misma experiencia web.
+
+El proyecto combina un catálogo público con áreas privadas para clientes, freelancers y administradores. También incorpora mensajería, favoritos, notificaciones, reseñas verificadas y un asistente contextual con inteligencia artificial.
+
+## Objetivo
+
+Centralizar en una sola plataforma las tareas principales de un mercado de servicios digitales:
+
+- Publicación y descubrimiento de servicios profesionales.
+- Contratación con cálculo automático de comisiones.
+- Seguimiento de pedidos, entregas y disputas.
+- Comunicación directa entre clientes y freelancers.
+- Administración de usuarios, servicios e indicadores del negocio.
+
+## Funcionalidades principales
+
+### Marketplace y perfiles
+
+- Catálogo de servicios organizado por categorías.
+- Búsqueda y consulta del detalle de cada servicio.
+- Perfiles públicos de freelancers con habilidades, idiomas, experiencia y portafolio.
+- Galería de imágenes y etiquetas por servicio.
+- Favoritos y registro de servicios vistos recientemente.
+- Tema claro y oscuro con diseño adaptable.
+
+### Servicios y órdenes
+
+- Creación, edición, activación y pausa de servicios por el freelancer.
+- Contratación con requisitos específicos del cliente.
+- Cálculo configurable de la comisión de la plataforma.
+- Flujo de estados para órdenes pendientes, en progreso, entregadas, completadas, canceladas o en disputa.
+- Control de transiciones según el rol del comprador, freelancer o administrador.
+- Reseñas permitidas únicamente después de completar una orden.
+
+### Comunicación y seguimiento
+
+- Conversaciones privadas entre usuarios y almacenamiento del historial de mensajes.
+- Centro de notificaciones con lectura individual o masiva.
+- Dashboard con ganancias, órdenes, servicios e indicadores gráficos.
+- Panel administrativo para gestionar usuarios, roles, servicios y comisiones.
+- Formulario público de contacto persistido en la base de datos.
+
+### Asistente con IA
+
+La plataforma integra un chatbot mediante **Groq API**. El asistente puede consultar el catálogo, las categorías y, cuando existe una sesión válida, el historial de pedidos o favoritos del usuario. El contexto se limita para evitar revelar información perteneciente a terceros.
+
+## Arquitectura
+
+FreelanceHub utiliza **Next.js 16** con App Router y **React 19**. La aplicación reúne frontend y backend mediante:
+
+- Páginas públicas y privadas renderizadas con Next.js.
+- Route Handlers para los endpoints HTTP.
+- Server Actions para servicios, órdenes, mensajes, reseñas y administración.
+- Contextos de React para autenticación, favoritos, notificaciones, tema y elementos recientes.
+- Componentes interactivos con Tailwind CSS, Motion, Lucide y Chart.js.
+
+La persistencia se implementa con **Azure SQL Database** mediante el paquete `mssql`. El esquema normaliza perfiles, habilidades, servicios, etiquetas, imágenes, órdenes, participantes de conversaciones y otros datos relacionados.
+
+## Seguridad y consistencia
+
+- Contraseñas derivadas con PBKDF2-SHA256, sal aleatoria y 210,000 iteraciones.
+- Comparación de hashes resistente a ataques de temporización.
+- Sesiones firmadas con HMAC-SHA256 en cookies `HttpOnly`.
+- Cookies `Secure` en producción y expiración de sesión controlada.
+- Autorización por roles de cliente, freelancer y administrador.
+- Consultas parametrizadas para Azure SQL.
+- Transacciones con bloqueo para órdenes, conversaciones y favoritos.
+- Validación de propiedad antes de editar servicios o acceder a conversaciones.
+
+## Servicios de Azure
+
+- **Azure SQL Database** para la información transaccional del marketplace.
+- **Azure Blob Storage** para avatares, imágenes de servicios y elementos del portafolio de los freelancers.
+- Validación de tipo y límite de 5 MB antes de cargar imágenes.
+
+## Tecnologías utilizadas
+
+- Next.js 16 y React 19
+- TypeScript
+- Tailwind CSS 4
+- Azure SQL y `mssql`
+- Azure Blob Storage
+- Chart.js
+- Motion y Lucide React
+- Groq API
+
+## Repositorio
+
+[Ver el código fuente de FreelanceHub en GitHub](https://github.com/CarlosTorres6969/Freelancehub)

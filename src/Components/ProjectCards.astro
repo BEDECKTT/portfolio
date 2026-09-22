@@ -9,12 +9,15 @@ interface Props {
 
 const { title, description, link, tags = [], coverImage } = Astro.props;
 
-type VisualType = 'ai' | 'go' | 'mental-health' | 'warehouse' | 'commerce' | 'orders' | 'vision' | 'social' | 'generic';
+type VisualType = 'canine' | 'marketplace' | 'education' | 'ai' | 'go' | 'mental-health' | 'warehouse' | 'commerce' | 'orders' | 'vision' | 'social' | 'generic';
 
 const normalizedTitle = title.toLocaleLowerCase('es');
 let visualType: VisualType = 'generic';
 
-if (normalizedTitle.includes('académico') || normalizedTitle.includes('inteligencia artificial')) visualType = 'ai';
+if (normalizedTitle.includes('agente canino') || normalizedTitle.includes('geolocalización')) visualType = 'canine';
+else if (normalizedTitle.includes('freelancehub') || normalizedTitle.includes('marketplace de servicios')) visualType = 'marketplace';
+else if (normalizedTitle.includes('teachtrace') || normalizedTitle.includes('trazabilidad del aprendizaje')) visualType = 'education';
+else if (normalizedTitle.includes('académico') || normalizedTitle.includes('inteligencia artificial')) visualType = 'ai';
 else if (normalizedTitle.includes('proyecto go')) visualType = 'go';
 else if (normalizedTitle.includes('depression') || normalizedTitle.includes('depresión')) visualType = 'mental-health';
 else if (normalizedTitle.includes('warehouse')) visualType = 'warehouse';
@@ -39,7 +42,53 @@ else if (normalizedTitle.includes('red social')) visualType = 'social';
     <div class={`project-visual project-placeholder visual-${visualType} w-full h-44 flex items-center justify-center`} aria-hidden="true">
       <span class="visual-glow"></span>
 
-      {visualType === 'ai' ? (
+      {visualType === 'canine' ? (
+        <svg class="visual-art" viewBox="0 0 320 176" fill="none">
+          <path class="visual-line signal-line" d="M24 143 82 108l54 20 67-39 92 36M38 41l52 27 54-30 67 31 70-36" />
+          <path class="visual-line" d="M82 108 90 68M136 128l8-90M203 89l8-20M246 108l35-75" />
+          <path class="visual-panel" d="m121 68-29-25 5 55M199 68l29-25-5 55" />
+          <path class="visual-core" d="M108 96c0-34 21-55 52-55s52 21 52 55c0 36-22 57-52 57s-52-21-52-57Z" />
+          <circle class="visual-node" cx="140" cy="87" r="5" />
+          <circle class="visual-node" cx="180" cy="87" r="5" />
+          <path class="visual-fill" d="m160 101-10 7 10 8 10-8Z" />
+          <path class="visual-accent" d="M160 116v8M160 124c-8 8-17 7-22 2M160 124c8 8 17 7 22 2M119 132h82" />
+          <rect class="visual-accent" x="146" y="128" width="28" height="15" rx="5" />
+          <circle class="visual-fill pulse-node" cx="160" cy="135.5" r="3" />
+          <path class="visual-accent" d="M260 55c0 21-23 43-23 43s-23-22-23-43a23 23 0 1 1 46 0Z" />
+          <circle class="visual-node" cx="237" cy="55" r="7" />
+          <path class="visual-accent signal-line" d="M45 92c9-9 22-9 31 0M51 99c6-6 13-6 19 0" />
+          <circle class="visual-node pulse-node delay" cx="60.5" cy="107" r="4" />
+          <text class="visual-label" x="160" y="20" text-anchor="middle">SMART COLLAR · GPS</text>
+        </svg>
+      ) : visualType === 'marketplace' ? (
+        <svg class="visual-art" viewBox="0 0 320 176" fill="none">
+          <rect class="visual-panel" x="33" y="48" width="78" height="86" rx="14" />
+          <rect class="visual-panel" x="209" y="48" width="78" height="86" rx="14" />
+          <circle class="visual-core" cx="160" cy="91" r="40" />
+          <path class="visual-line signal-line" d="M111 77h12M197 77h12M111 107h12M197 107h12" />
+          <circle class="visual-node pulse-node" cx="72" cy="76" r="12" />
+          <path class="visual-accent" d="M52 113c5-15 14-22 20-22s15 7 20 22" />
+          <circle class="visual-node" cx="248" cy="76" r="12" />
+          <path class="visual-accent" d="M228 113c5-15 14-22 20-22s15 7 20 22" />
+          <rect class="visual-accent" x="140" y="76" width="40" height="31" rx="5" />
+          <path class="visual-accent" d="M151 76v-8h18v8M140 88h40M154 88v5h12v-5" />
+          <path class="visual-fill" d="m154 121 6 6 13-16 5 4-18 22-11-11Z" />
+          <text class="visual-label" x="160" y="22" text-anchor="middle">TALENT MARKETPLACE</text>
+        </svg>
+      ) : visualType === 'education' ? (
+        <svg class="visual-art" viewBox="0 0 320 176" fill="none">
+          <rect class="visual-panel" x="66" y="25" width="188" height="126" rx="18" />
+          <path class="visual-line signal-line" d="M93 58h91M93 83h62M93 108h82M93 133h47" />
+          <circle class="visual-node" cx="79" cy="58" r="5" />
+          <circle class="visual-node pulse-node" cx="79" cy="83" r="5" />
+          <circle class="visual-node" cx="79" cy="108" r="5" />
+          <circle class="visual-node" cx="79" cy="133" r="5" />
+          <path class="visual-accent" d="m213 63 25 14v29l-25 14-25-14V77Z" />
+          <path class="visual-accent" d="m198 82 15 9 15-9M213 91v18" />
+          <path class="visual-fill" d="m191 125 8 8 16-20 6 5-21 27-14-14Z" />
+          <text class="visual-label" x="160" y="18" text-anchor="middle">LEARNING TRACE + AI</text>
+        </svg>
+      ) : visualType === 'ai' ? (
         <svg class="visual-art" viewBox="0 0 320 176" fill="none">
           <path class="visual-line signal-line" d="M43 47 91 68M277 45l-48 23M42 132l52-27M276 133l-49-28" />
           <circle class="visual-node pulse-node" cx="40" cy="45" r="6" />
@@ -255,6 +304,9 @@ else if (normalizedTitle.includes('red social')) visualType = 'social';
     opacity: 0.2;
   }
 
+  .visual-canine { --visual-secondary: #22c55e; }
+  .visual-marketplace { --visual-secondary: #08b6d6; }
+  .visual-education { --visual-secondary: #f5a623; }
   .visual-ai { --visual-secondary: #ff2bd6; }
   .visual-go { --visual-secondary: #00add8; }
   .visual-mental-health { --visual-secondary: #ff4d8d; }
